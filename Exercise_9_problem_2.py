@@ -14,6 +14,19 @@ from shapely.geometry import Point
 data = None
 
 
+fp = "data/some_posts.csv"
+data = pd.read_csv(fp)
+
+
+
+p = []
+for idx, dt in data.iterrows():
+  p.append(Point(dt['lat'], dt['lon']))
+
+
+
+data['geometry'] = p
+
 # CODE FOR TESTING YOUR SOLUTION
 
 # Check the result
@@ -32,6 +45,14 @@ from pyproj import CRS
 
 # Convert DataFrame into a GeoDataFrame
 geo=None
+
+
+geo = gpd.GeoDataFrame(data, geometry='geometry', crs=CRS.from_epsg(4326).to_wkt())
+
+
+fp = "Kruger_posts.shp"
+geo.to_file(fp)
+
 # CODE FOR TESTING YOUR SOLUTION
 
 # Check the geodataframe head
